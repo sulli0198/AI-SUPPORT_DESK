@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enum defined
+enum UserRole {
+  user
+  moderator
+  admin
+}
+
+// ------------------------------------------------------------------
+
+model User {
+  id              Int        @id @default(autoincrement())
+  email           String     @unique
+  password        String
+  role            UserRole   @default(user) // uses the strict Enum
+  skills          String[]
+  createdAt       DateTime   @default(now())
+
+  // Relationships
+  createdTickets  Ticket[] @relation("CreatedBy")
+  assignedTickets Ticket[] @relation("AssignedTo")
+}
+
+// ------------------------------------------------------------------
+
+model Ticket {
+  id              Int        @id @default(autoincrement())
+  title           String
+  description     String
+  status          String     @default("TODO")
+  priority        String
+  deadline        DateTime? // Made nullable in your version, keep this if intended
+  helpfulNotes    String?   // Made nullable in your version, keep this if intended
+  relatedSkills   String[]
+
+  // Foreign Keys (Int matches User's 'id' type)
+  createdBy       Int
+  assignedTo      Int? // Optional assignment
+
+  createdAt       DateTime   @default(now())
+
+  // Relationships linking to the User model
+  creator         User       @relation("CreatedBy", fields: [createdBy], references: [id])
+  assignee        User?      @relation("AssignedTo", fields: [assignedTo], references: [id])
+}
