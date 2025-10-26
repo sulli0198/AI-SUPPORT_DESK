@@ -44,8 +44,8 @@ model Ticket {
   description     String
   status          String     @default("TODO")
   priority        String
-  deadline        DateTime? // Made nullable in your version, keep this if intended
-  helpfulNotes    String?   // Made nullable in your version, keep this if intended
+  deadline        DateTime? 
+  helpfulNotes    String?   
   relatedSkills   String[]
 
   // Foreign Keys (Int matches User's 'id' type)
