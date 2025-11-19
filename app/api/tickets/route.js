@@ -20,6 +20,7 @@ export async function POST(request) {
     }
 
     // Create ticket with Prisma
+    // 🎯 THIS LINE SAVES TO DATABASE:
     const newTicket = await prisma.ticket.create({
       data: {
         title,

@@ -1,8 +1,8 @@
 import { inngest } from "../client.js";
-import { prisma } from "../../lib/prisma.js";
+import { prisma } from "@/lib/prisma.js";
 import { NonRetriableError } from "inngest";
-import { sendMail } from "../../lib/mailer.js";
-import analyzeTicket from "../../lib/ai.js";
+import { sendMail } from "@/lib/mailer.js";
+import analyzeTicket from "@/lib/ai.js";
 
 export const onTicketCreated = inngest.createFunction(
   { id: "on-ticket-created", retries: 2 },
@@ -10,11 +10,13 @@ export const onTicketCreated = inngest.createFunction(
   async ({ event, step }) => {
     try {
       const { ticketId } = event.data;
+      const ticketIdNum = parseInt(ticketId);
+      
       
       // Fetch ticket from DB
       const ticket = await step.run("fetch-ticket", async () => {
         const ticketObject = await prisma.ticket.findUnique({
-          where: { id: ticketId }
+          where: { id: ticketIdNum }
         });
         if (!ticketObject) {
           throw new NonRetriableError("Ticket not found");
