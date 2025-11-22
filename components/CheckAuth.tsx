@@ -24,7 +24,7 @@ export default function CheckAuth({ children, protected: protectedRoute }: Check
     } else {
       // Public route - requires logout  
       if (token) {
-        router.push('/tickets')  // Changed from '/' to '/tickets'
+        router.push('/tickets')  
       } else {
         setLoading(false)
       }
