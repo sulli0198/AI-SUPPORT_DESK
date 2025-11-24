@@ -24,12 +24,12 @@ export const onTicketCreated = inngest.createFunction(
         return ticketObject;
       });
       
-      await step.run("update-ticket-status", async () => {
-        await prisma.ticket.update({
-          where: { id: ticket.id },
-          data: { status: "TODO" }
-        });
-      });
+      // await step.run("update-ticket-status", async () => {
+      //   await prisma.ticket.update({
+      //     where: { id: ticket.id },
+      //     data: { status: "TODO" }
+      //   });
+      // });
       
       const aiResponse = await analyzeTicket(ticket);
       

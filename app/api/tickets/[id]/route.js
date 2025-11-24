@@ -7,7 +7,7 @@ import { authenticate } from "@/lib/auth";
 export async function GET(request, { params }) {
   try {
     const user = authenticate(request);
-    const { id } = params;
+    const { id } = await params;
     let ticket;
 
     if (user.role !== "user") {
@@ -36,7 +36,9 @@ export async function GET(request, { params }) {
           description: true,
           status: true,
           createdAt: true,
-          priority: true
+          priority: true,
+          helpfulNotes: true,      
+          relatedSkills: true  
         }
       });
     }
